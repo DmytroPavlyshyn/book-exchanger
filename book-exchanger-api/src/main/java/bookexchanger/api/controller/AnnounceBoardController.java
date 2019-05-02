@@ -3,6 +3,7 @@ package bookexchanger.api.controller;
 import bookexchanger.api.entities.AnnounceBoardEntity;
 import bookexchanger.api.models.AnnounceAddRequest;
 import bookexchanger.api.models.AnnounceAddResponse;
+import bookexchanger.api.models.AnnounceDataResponse;
 import bookexchanger.api.repository.impl.AnnounceBoardRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,8 @@ public class AnnounceBoardController {
 
 
     @GetMapping(value = "/api/announce")
-    public ResponseEntity<List<AnnounceBoardEntity>> getAllUsers() throws SQLException {
-        List<AnnounceBoardEntity> announceBoardEntities = announceBoardRepository.selectAll();
+    public ResponseEntity<List<AnnounceDataResponse>> getAllUsers() throws SQLException {
+        List<AnnounceDataResponse> announceBoardEntities = announceBoardRepository.selectAll2();
         return new ResponseEntity<>(announceBoardEntities, HttpStatus.OK);
     }
 

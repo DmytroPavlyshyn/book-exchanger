@@ -23,8 +23,8 @@ class ExpenceItem extends Component {
         return (
             <tr key={ item.id }>
                 <td>{ item.id }</td>
-                <td>{ item.userId }</td>
-                <td>{ item.bookId }</td>
+                <td>{ item.user }</td>
+                <td>{ item.book }</td>
                 <td>{ item.announceTimestamp }</td>
             </tr>
         );

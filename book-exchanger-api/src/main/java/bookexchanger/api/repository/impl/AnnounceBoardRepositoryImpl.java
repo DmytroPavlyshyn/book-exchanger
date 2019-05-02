@@ -2,6 +2,7 @@ package bookexchanger.api.repository.impl;
 
 import bookexchanger.api.ConnectionManager;
 import bookexchanger.api.entities.AnnounceBoardEntity;
+import bookexchanger.api.models.AnnounceDataResponse;
 import bookexchanger.api.repository.AnnounceBoardRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @Repository
 public class AnnounceBoardRepositoryImpl implements AnnounceBoardRepository {
     private static final String SELECT_ALL = "SELECT * FROM public.announce_board";
+
+    private static final String SELECT_ALL2 = "SELECT a.id, u.surname, b.name, a.announce_timestamp FROM public.announce_board a JOIN public.\"user\" u ON  a.user_id=u.id JOIN  public.\"book\" b ON a.book_id = b.id";
 
     private static final String CREATE =
             "INSERT INTO public.announce_board (\"user_id\",\"book_id\",\"announce_timestamp\")\n" +
@@ -57,6 +60,23 @@ public class AnnounceBoardRepositoryImpl implements AnnounceBoardRepository {
     }
 
     @Override
+    public List<AnnounceDataResponse> selectAll2() throws SQLException {
+        List<AnnounceDataResponse> entities = new ArrayList<>();
+        try (
+                Connection connection = ConnectionManager.getConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(SELECT_ALL2)
+        ) {
+            while (resultSet.next()) {
+                entities.add(parseResultSet2(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return entities;
+    }
+
+    @Override
     public AnnounceBoardEntity findById(Integer id) throws SQLException {
         return null;
     }
@@ -78,7 +98,13 @@ public class AnnounceBoardRepositoryImpl implements AnnounceBoardRepository {
         LocalDateTime announceTS = resultSet.getTimestamp("announce_timestamp").toLocalDateTime();
         return new AnnounceBoardEntity(id, userId, bookId, announceTS);
     }
-
+    private AnnounceDataResponse parseResultSet2(ResultSet resultSet) throws SQLException {
+        Integer id = resultSet.getInt("id");
+        String user = resultSet.getString("surname");
+        String book = resultSet.getString("name");
+        LocalDateTime announceTS = resultSet.getTimestamp("announce_timestamp").toLocalDateTime();
+        return new AnnounceDataResponse(id,user,book, announceTS);
+    }
     private void setPreparedStatementData(PreparedStatement statement, AnnounceBoardEntity entity) throws SQLException {
         statement.setInt(1, entity.getUserId());
         statement.setInt(2, entity.getBookId());

@@ -1,8 +1,8 @@
 package bookexchanger.api.repository.impl;
 
 import bookexchanger.api.ConnectionManager;
-import bookexchanger.api.repository.UserRepository;
 import bookexchanger.api.entities.UserEntity;
+import bookexchanger.api.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -26,9 +26,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<UserEntity> selectAll() {
         List<UserEntity> userEntities = new ArrayList<>();
-        Connection connection = ConnectionManager.getConnection();
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(SELECT_ALL)
+        try (
+                Connection connection = ConnectionManager.getConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(SELECT_ALL)
         ) {
             while (resultSet.next()) {
                 userEntities.add(parseResultSet(resultSet));
@@ -41,8 +42,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public UserEntity findById(Integer _id) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
             statement.setInt(1, _id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -56,8 +57,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public UserEntity insert(UserEntity entity) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(CREATE)) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE)) {
             setPreparedStatementData(statement, entity);
             try (ResultSet generatedKeys = statement.executeQuery()) {
                 if (generatedKeys.next()) {
@@ -70,8 +71,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int update(UserEntity entity) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             setPreparedStatementData(statement, entity);
             statement.setInt(7, entity.getId());
             return statement.executeUpdate();
@@ -80,8 +81,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int delete(UserEntity entity) throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setInt(1, entity.getId());
             return statement.executeUpdate();
         }

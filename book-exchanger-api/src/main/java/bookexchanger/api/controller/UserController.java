@@ -1,7 +1,6 @@
 package bookexchanger.api.controller;
 
 import bookexchanger.api.entities.UserEntity;
-import bookexchanger.api.exceptions.UserNotFoundException;
 import bookexchanger.api.models.UserRegRequest;
 import bookexchanger.api.models.UserRegResponse;
 import bookexchanger.api.repository.impl.UserRepositoryImpl;
@@ -26,16 +25,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/api/user/{user_id}")
-    public ResponseEntity<UserEntity> getBook(@PathVariable Integer user_id) {
-        try {
-            UserEntity book = userRepository.findById(user_id);
-            return new ResponseEntity<>(book, HttpStatus.OK);
-        }catch (SQLException e){
-            throw new UserNotFoundException();
-        }
+    public ResponseEntity<UserEntity> getBook(@PathVariable Integer user_id) throws SQLException {
+        UserEntity book = userRepository.findById(user_id);
+        return new ResponseEntity<>(book, HttpStatus.OK);
+
     }
+
     @PostMapping("/api/user/register")
-    public UserRegResponse register(@RequestBody UserRegRequest regRequest) throws Exception {
+    public ResponseEntity<UserRegResponse> register(@RequestBody UserRegRequest regRequest) throws Exception {
 
         UserEntity newUser = new UserEntity();
         newUser.setEmail(regRequest.getEmail());
@@ -48,7 +45,7 @@ public class UserController {
         UserEntity insertedUser = this.userRepository.insert(newUser);
         UserRegResponse regResponse = new UserRegResponse();
         regResponse.setUserId(insertedUser.getId());
-        return regResponse;
+        return new ResponseEntity<>(regResponse, HttpStatus.OK);
     }
 
 }

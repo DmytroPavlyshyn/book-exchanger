@@ -9,20 +9,18 @@ public class ConnectionManager {
     private static final String user = "postgres";
     private static final String password = "123456";
 
-    private static Connection connection = null;
 
     public ConnectionManager() {
     }
 
     public static Connection getConnection() {
             try {
-            connection = DriverManager.getConnection(url, user, password);
+            return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
+            throw new RuntimeException(e);
         }
-
-        return connection;
     }
 }

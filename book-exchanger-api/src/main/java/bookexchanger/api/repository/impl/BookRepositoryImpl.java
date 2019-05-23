@@ -20,6 +20,10 @@ public class BookRepositoryImpl implements BookRepository {
                     "VALUES(?,?,?,?,?) RETURNING id;";
 
 
+    private static final String UPDATE = "UPDATE public.user  u SET  " +
+            "\"email\" = ?,\"password\" = ?,\"first_name\" = ?,\"surname\" = ?,\"phone\" = ?,\"is_active\" = ?" +
+            "WHERE u.id= ?";
+
     @Override
     public List<BookEntity> selectAll() throws SQLException {
         List<BookEntity> entities = new ArrayList<>();

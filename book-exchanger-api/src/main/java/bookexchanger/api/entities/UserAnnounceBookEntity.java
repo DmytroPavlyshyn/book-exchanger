@@ -63,7 +63,7 @@ public class UserAnnounceBookEntity {
     @Override
     public String toString() {
         return "UserAnnounceBookEntity{" +
-                "id=" + id +
+                "clientId=" + id +
                 ", userEntity=" + userEntity +
                 ", bookEntity=" + bookEntity +
                 ", announceTimeStamp=" + announceTimeStamp +

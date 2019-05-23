@@ -1,7 +1,7 @@
 package bookexchanger.api.entities;
 
 public class OrderEntity {
-    Integer id;
+    Integer clientId;
     Integer announceId;
     String comment;
     Boolean isActive;
@@ -9,19 +9,19 @@ public class OrderEntity {
     public OrderEntity() {
     }
 
-    public OrderEntity(Integer id, Integer announceId, String comment, Boolean isActive) {
-        this.id = id;
+    public OrderEntity(Integer clientID, Integer announceId, String comment, Boolean isActive) {
+        this.clientId = clientID;
         this.announceId = announceId;
         this.comment = comment;
         this.isActive = isActive;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getClientId() {
+        return clientId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
     public Integer getAnnounceId() {
@@ -51,7 +51,7 @@ public class OrderEntity {
     @Override
     public String toString() {
         return "OrderEntity{" +
-                "id=" + id +
+                "clientId=" + clientId +
                 ", announceId=" + announceId +
                 ", comment='" + comment + '\'' +
                 ", isActive=" + isActive +

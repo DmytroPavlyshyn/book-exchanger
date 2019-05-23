@@ -62,8 +62,8 @@ public class AnnounceBoardEntity {
     @Override
     public String toString() {
         return "AnnounceBoardEntity{" +
-                "id=" + id +
-                ", userId=" + userId +
+                "clientId=" + id +
+                ", clientId=" + userId +
                 ", bookId=" + bookId +
                 ", announceTimestamp=" + announceTimestamp +
                 '}';

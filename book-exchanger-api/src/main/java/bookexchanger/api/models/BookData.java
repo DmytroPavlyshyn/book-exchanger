@@ -1,27 +1,25 @@
 package bookexchanger.api.models;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
 
-public class AnnounceAddRequest {
+public class BookData {
     private String name;
     private String genre;
     private String description;
     private String author;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate year;
 
-    public AnnounceAddRequest() {
+    public BookData() {
     }
 
-    public AnnounceAddRequest(String name, String genre, String description, String author, LocalDate year) {
+    public BookData(String name, String genre, String description, String author, LocalDate year) {
         this.name = name;
         this.genre = genre;
         this.description = description;
         this.author = author;
         this.year = year;
     }
+
 
     public String getName() {
         return name;

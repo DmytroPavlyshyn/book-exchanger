@@ -29,13 +29,27 @@ CREATE TABLE "announce_board"
 	"id" SERIAL NOT NULL,
 	"user_id" INTEGER NOT NULL,
 	"book_id" INTEGER NOT NULL,
-	"announce_timestamp" TIMESTAMP ,
+	"announce_timestamp" TIMESTAMP,
+	"is_active" BOOLEAN,
+
     CONSTRAINT pk_announce_board_id PRIMARY KEY ("id"),
 	CONSTRAINT fk_user_id FOREIGN KEY("user_id") 
 	REFERENCES "user"("id"),
 	CONSTRAINT fk_book_id FOREIGN KEY("book_id") 
 	REFERENCES "book"("id")
+ 	);
+
+CREATE TABLE "order"
+(
+  "id" SERIAL NOT NULL,
+  "announce_id" INTEGER NOT NULL,
+  "comment" VARCHAR(250),
+  "is_active" BOOLEAN,
+    CONSTRAINT fk_user_id FOREIGN KEY("announce_id")
+    REFERENCES "announce_board"("id")
 );
+
+
 
 INSERT INTO "user" ("email","password","first_name","surname","phone","is_active")
 VALUES('user@gmail.com','123456','First','Sur','+380000000000','true');

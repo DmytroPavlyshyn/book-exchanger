@@ -7,15 +7,16 @@ public class AnnounceBoardEntity {
     private Integer userId;
     private Integer bookId;
     private LocalDateTime announceTimestamp;
-
+    private Boolean isActive;
     public AnnounceBoardEntity() {
     }
 
-    public AnnounceBoardEntity(Integer id, Integer userId, Integer bookId, LocalDateTime announceTimestamp) {
+    public AnnounceBoardEntity(Integer id, Integer userId, Integer bookId, LocalDateTime announceTimestamp, Boolean isActive) {
         this.id = id;
         this.userId = userId;
         this.bookId = bookId;
         this.announceTimestamp = announceTimestamp;
+        this.isActive = isActive;
     }
 
     public Integer getId() {
@@ -48,6 +49,14 @@ public class AnnounceBoardEntity {
 
     public void setAnnounceTimestamp(LocalDateTime announceTimestamp) {
         this.announceTimestamp = announceTimestamp;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
     @Override

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Link, BrowserRouter as Router, Switch } from 'react-router-dom'
 
 
 class ExpenceItem extends Component {
@@ -24,14 +24,15 @@ class ExpenceItem extends Component {
         return (
             <tr key={ item.id }>
                 <td>{ item.id }</td>
-                <td>{ item.firsName }</td>
-                <td>{ item.lastName }</td>
+                <td>{ item.firstName }</td>
+                <td>{ item.surname }</td>
                 <td>{ item.bookName }</td>
                 <td>{ item.bookGenre }</td>
                 <td>{ item.author }</td>
                 <td>{ item.year }</td>
                 <td>{ item.announceTimestamp }</td>
                 <td><Link to={'/announce/'+item.id}>Detail</Link></td>
+                {/* <td><Link to={'/order/'+item.id}>+</Link></td> */}
             </tr>
         );
     }

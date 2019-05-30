@@ -36,7 +36,7 @@ public class UserAnnounceBookRepositoryImpl implements UserAnnounceBookRepositor
             "JOIN  public.\"book\" b ON a.book_id = b.id";
 
 
-    private static final String FIND_BY_ID = SELECT_ALL + " WHERE u.id=?";
+    private static final String FIND_BY_ID = SELECT_ALL + " WHERE a.id=?";
 
     @Override
     public List<UserAnnounceBookEntity> selectAll() {
@@ -101,7 +101,7 @@ public class UserAnnounceBookRepositoryImpl implements UserAnnounceBookRepositor
 
     public static void main(String[] args) throws SQLException {
         UserAnnounceBookRepositoryImpl  userAnnounceBookRepository = new UserAnnounceBookRepositoryImpl();
-        System.out.println(userAnnounceBookRepository.findById(3));
+        System.out.println(userAnnounceBookRepository.findById(4));
     }
 
 

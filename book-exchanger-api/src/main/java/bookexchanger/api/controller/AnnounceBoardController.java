@@ -7,6 +7,7 @@ import bookexchanger.api.entities.UserEntity;
 import bookexchanger.api.models.AnnounceAddRequest;
 import bookexchanger.api.models.AnnounceAddResponse;
 import bookexchanger.api.models.AnnounceDataResponse;
+import bookexchanger.api.models.AnnounceDetailedDataResponse;
 import bookexchanger.api.repository.AnnounceBoardRepository;
 import bookexchanger.api.repository.BookRepository;
 import bookexchanger.api.repository.UserAnnounceBookRepository;
@@ -81,10 +82,20 @@ public class AnnounceBoardController {
         return new ResponseEntity<>(announceAddResponse, HttpStatus.OK);
     }
     @GetMapping(value = "/api/announce/{id}")
-    public ResponseEntity<UserAnnounceBookEntity> getAnnounce(@PathVariable Integer id) throws SQLException {
-        UserAnnounceBookEntity entity = userAnnounceBookRepository.findById(id);
-        return new ResponseEntity<>(entity, HttpStatus.OK);
-
+    public ResponseEntity<AnnounceDetailedDataResponse> getAnnounce(@PathVariable Integer id) throws SQLException {
+        UserAnnounceBookEntity a = userAnnounceBookRepository.findById(id);
+        UserEntity u = a.getUserEntity();
+        BookEntity b = a.getBookEntity();
+        return new ResponseEntity<>(new AnnounceDetailedDataResponse(
+                a.getId(),
+                u.getFirstName(),
+                u.getSurname(),
+                b.getName(),
+                b.getGenre(),
+                b.getAuthor(),
+                b.getYear(),
+                b.getDescription(),
+                a.getAnnounceTimeStamp()),HttpStatus.OK);
     }
 
 }

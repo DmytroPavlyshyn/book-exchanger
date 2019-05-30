@@ -5,7 +5,8 @@ import ExpenceList from './pages/books/ExpenceList';
 import RegistrationForm from './pages/account/RegistrationForm';
 import Notfound from './pages/common/NotFound';
 import AnnouncePublish from './pages/books/AnnouncePublish';
-
+import ExpenseDetails from './pages/books/ExpenseDetails';
+import OrderRequest from './pages/books/OrderRequest';
 class App extends Component {
 
   constructor() {
@@ -39,6 +40,8 @@ class App extends Component {
             <Route exact path="/" component={ExpenceList} />
             <Route path="/register" component={RegistrationForm} />
             <Route path="/publish" component={AnnouncePublish} />
+            <Route path='/announce/:id' component={ExpenseDetails} />  
+            <Route path='/order/:id' component={OrderRequest} />  
             <Route component={Notfound} />
           </Switch>
         </div>

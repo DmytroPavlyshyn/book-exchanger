@@ -3,16 +3,18 @@ package bookexchanger.api.repository.impl;
 import bookexchanger.api.ConnectionManager;
 import bookexchanger.api.entities.BookEntity;
 import bookexchanger.api.entities.OrderEntity;
+import bookexchanger.api.models.ClientOrderResponse;
 import bookexchanger.api.repository.OrderRepository;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Repository
 public class OrderRepositoryImpl implements OrderRepository {
 
     private static final String SELECT_ALL = "SELECT " +
-            "\"client_id\"," +
+            "\"client_id\"," +"\"client_id\"," +
             "\"announce_id\"," +
             "\"comment\"," +
             "\"is_active\"" +
@@ -20,11 +22,18 @@ public class OrderRepositoryImpl implements OrderRepository {
 
 
     private static final String CREATE =
-            "INSERT INTO public.order (\"client_id\", \"announce_id\",\"comment\",\"is_active\") VALUES(?,?,?,?)";
+            "INSERT INTO public.order (\"client_id\", \"announce_id\",\"comment\",\"is_active\") VALUES(?,?,?,?) RETURNING \"client_id\"";
 
-    private static final String FIND_BY_CLIENT_ID = SELECT_ALL + " WHERE  o.client_id=? ";
+    private static final String FIND_BY_CLIENT_ID = SELECT_ALL + " WHERE   o.client_id=? ";
+    private static final String FIND_BY_ANNOUNCE_ID =  "SELECT " +
+            "\"client_id\"," +
+            "\"first_name\", " +
+            "\"surname\"," +
+            "\"announce_id\"," +
+            "\"comment\"" +
+            " FROM public.order o JOIN public.user u ON o.client_id=u.id WHERE  o.announce_id=?  ";
 
-    private static final String UPDATE_STATUS = "UPDATE public.order  SET \"is_active\" =? WHERE announce_id = ?";
+    private static final String UPDATE_STATUS = "UPDATE public.order  SET \"is_active\" =? WHERE client_id = ? AND announce_id=?";
 
     @Override
     public List<OrderEntity> selectAll() throws SQLException {
@@ -64,7 +73,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         return null;
     }
 
-    public OrderEntity findByClientId(Integer _id) throws SQLException {
+    public  OrderEntity findByClientId(Integer _id) throws SQLException {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BY_CLIENT_ID)) {
             statement.setInt(1, _id);
@@ -77,13 +86,33 @@ public class OrderRepositoryImpl implements OrderRepository {
         return null;
 
     }
+    public  List<ClientOrderResponse> findByAnnounceId(Integer _id) throws SQLException {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_ANNOUNCE_ID)) {
+            List<ClientOrderResponse> clientOrderResponses = new ArrayList<>();
+            statement.setInt(1, _id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Integer clientId = resultSet.getInt("client_id");
 
+                String firstName = resultSet.getString("first_name");
+                String surname = resultSet.getString("surname");
+                Integer announceId = resultSet.getInt("announce_id");
+                String comment = resultSet.getString("comment");
+
+                clientOrderResponses.add(new ClientOrderResponse(clientId,firstName,surname,announceId,comment));
+
+            }
+            return clientOrderResponses;
+        }
+    }
     public int updateStatus(OrderEntity entity) throws SQLException {  //TODO
         int updatesNumber = 0;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_STATUS)) {
             statement.setBoolean(1,entity.getActive());
-            statement.setInt(2,entity.getAnnounceId());
+            statement.setInt(2,entity.getClientId());
+            statement.setInt(3,entity.getAnnounceId());
             updatesNumber = statement.executeUpdate();
         }
         return updatesNumber;

@@ -44,10 +44,27 @@ CREATE TABLE "order"
   "id" SERIAL NOT NULL,
   "announce_id" INTEGER NOT NULL,
   "comment" VARCHAR(250),
-  "is_active" BOOLEAN,
-    CONSTRAINT fk_user_id FOREIGN KEY("announce_id")
+  "is_active" BOOLEAN,	
+	CONSTRAINT pk_order_id PRIMARY KEY ("id"),
+    CONSTRAINT fk_announce_id FOREIGN KEY("announce_id")
     REFERENCES "announce_board"("id")
 );
+
+CREATE TABLE "order"
+(
+  
+  "client_id" INTEGER NOT NULL,
+  "announce_id" INTEGER NOT NULL,
+  "comment" VARCHAR(250),
+  "is_active" BOOLEAN,
+  CONSTRAINT pk_order_ca_id PRIMARY KEY ("client_id","announce_id"),
+  CONSTRAINT fk_user_id FOREIGN KEY("client_id") 
+	REFERENCES "user"("id"),
+  CONSTRAINT fk_announce_id FOREIGN KEY("announce_id")
+    REFERENCES "announce_board"("id")
+);
+
+
 
 
 
